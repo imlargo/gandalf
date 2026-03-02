@@ -25,6 +25,7 @@ export class OfficeScene extends Phaser.Scene {
 	private lastEmittedX = 0;
 	private lastEmittedY = 0;
 	private onPlayerCountChange?: (count: number) => void;
+	private initialPlayers: Record<string, PlayerData> = {};
 
 	constructor() {
 		super({ key: 'OfficeScene' });
@@ -41,15 +42,7 @@ export class OfficeScene extends Phaser.Scene {
 		this.playerName = data.name;
 		this.playerColor = data.color;
 		this.onPlayerCountChange = data.onPlayerCountChange;
-
-		// Add existing remote players
-		if (data.players) {
-			for (const [id, pData] of Object.entries(data.players)) {
-				if (id !== this.socket.id) {
-					this.addRemotePlayer(pData);
-				}
-			}
-		}
+		this.initialPlayers = data.players || {};
 	}
 
 	create(): void {
@@ -72,10 +65,18 @@ export class OfficeScene extends Phaser.Scene {
 		// Camera follow
 		this.cameras.main.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
 		this.cameras.main.startFollow(this.player.getCollider(), true, 0.1, 0.1);
-		this.cameras.main.setZoom(1);
+		this.cameras.main.setZoom(2);
 
 		// Socket event listeners
 		this.setupSocketListeners();
+
+		// Add existing remote players (after map so they render on top)
+		for (const [id, pData] of Object.entries(this.initialPlayers)) {
+			if (id !== this.socket.id) {
+				this.addRemotePlayer(pData);
+			}
+		}
+		this.initialPlayers = {};
 
 		// Emit initial position
 		this.emitMove(spawnX, spawnY, 'down');
