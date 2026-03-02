@@ -89,12 +89,15 @@ export class OfficeScene extends Phaser.Scene {
 			this.updatePlayerCount();
 		});
 
-		this.socket.on('player:moved', (data: { id: string; x: number; y: number; direction: string }) => {
-			const remote = this.remotePlayers.get(data.id);
-			if (remote) {
-				remote.setTarget(data.x, data.y, data.direction);
+		this.socket.on(
+			'player:moved',
+			(data: { id: string; x: number; y: number; direction: string }) => {
+				const remote = this.remotePlayers.get(data.id);
+				if (remote) {
+					remote.setTarget(data.x, data.y, data.direction);
+				}
 			}
-		});
+		);
 
 		this.socket.on('player:left', (data: { id: string }) => {
 			const remote = this.remotePlayers.get(data.id);

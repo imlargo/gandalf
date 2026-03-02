@@ -31,21 +31,25 @@ export class RemotePlayer {
 		this.circle.strokeCircle(0, 0, PLAYER_RADIUS);
 
 		// Initial letter
-		const initial = scene.add.text(0, 0, name.charAt(0).toUpperCase(), {
-			fontSize: '16px',
-			color: '#ffffff',
-			fontFamily: 'sans-serif',
-			fontStyle: 'bold'
-		}).setOrigin(0.5, 0.5);
+		const initial = scene.add
+			.text(0, 0, name.charAt(0).toUpperCase(), {
+				fontSize: '16px',
+				color: '#ffffff',
+				fontFamily: 'sans-serif',
+				fontStyle: 'bold'
+			})
+			.setOrigin(0.5, 0.5);
 
 		// Name label
-		this.nameText = scene.add.text(0, -(PLAYER_RADIUS + 14), name, {
-			fontSize: '12px',
-			color: '#1a202c',
-			fontFamily: 'sans-serif',
-			backgroundColor: 'rgba(255,255,255,0.8)',
-			padding: { x: 4, y: 2 }
-		}).setOrigin(0.5, 0.5);
+		this.nameText = scene.add
+			.text(0, -(PLAYER_RADIUS + 14), name, {
+				fontSize: '12px',
+				color: '#1a202c',
+				fontFamily: 'sans-serif',
+				backgroundColor: 'rgba(255,255,255,0.8)',
+				padding: { x: 4, y: 2 }
+			})
+			.setOrigin(0.5, 0.5);
 
 		this.sprite = scene.add.container(x, y, [this.circle, initial, this.nameText]);
 		this.sprite.setSize(PLAYER_RADIUS * 2, PLAYER_RADIUS * 2);

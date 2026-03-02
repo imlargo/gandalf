@@ -12,7 +12,12 @@ export class Player {
 	color: number;
 	playerName: string;
 	cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-	wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
+	wasd!: {
+		W: Phaser.Input.Keyboard.Key;
+		A: Phaser.Input.Keyboard.Key;
+		S: Phaser.Input.Keyboard.Key;
+		D: Phaser.Input.Keyboard.Key;
+	};
 	direction: string = 'down';
 
 	constructor(scene: Phaser.Scene, x: number, y: number, name: string, color: string) {
@@ -28,21 +33,25 @@ export class Player {
 		this.circle.strokeCircle(0, 0, PLAYER_RADIUS);
 
 		// Initial letter
-		const initial = scene.add.text(0, 0, name.charAt(0).toUpperCase(), {
-			fontSize: '16px',
-			color: '#ffffff',
-			fontFamily: 'sans-serif',
-			fontStyle: 'bold'
-		}).setOrigin(0.5, 0.5);
+		const initial = scene.add
+			.text(0, 0, name.charAt(0).toUpperCase(), {
+				fontSize: '16px',
+				color: '#ffffff',
+				fontFamily: 'sans-serif',
+				fontStyle: 'bold'
+			})
+			.setOrigin(0.5, 0.5);
 
 		// Name above player
-		this.nameText = scene.add.text(0, -(PLAYER_RADIUS + 14), name, {
-			fontSize: '12px',
-			color: '#1a202c',
-			fontFamily: 'sans-serif',
-			backgroundColor: 'rgba(255,255,255,0.8)',
-			padding: { x: 4, y: 2 }
-		}).setOrigin(0.5, 0.5);
+		this.nameText = scene.add
+			.text(0, -(PLAYER_RADIUS + 14), name, {
+				fontSize: '12px',
+				color: '#1a202c',
+				fontFamily: 'sans-serif',
+				backgroundColor: 'rgba(255,255,255,0.8)',
+				padding: { x: 4, y: 2 }
+			})
+			.setOrigin(0.5, 0.5);
 
 		this.sprite = scene.add.container(x, y, [this.circle, initial, this.nameText]);
 		this.sprite.setSize(PLAYER_RADIUS * 2, PLAYER_RADIUS * 2);
@@ -75,11 +84,21 @@ export class Player {
 		const up = this.cursors?.up?.isDown || this.wasd?.W?.isDown;
 		const down = this.cursors?.down?.isDown || this.wasd?.S?.isDown;
 
-		if (left) { vx = -SPEED; this.direction = 'left'; }
-		else if (right) { vx = SPEED; this.direction = 'right'; }
+		if (left) {
+			vx = -SPEED;
+			this.direction = 'left';
+		} else if (right) {
+			vx = SPEED;
+			this.direction = 'right';
+		}
 
-		if (up) { vy = -SPEED; this.direction = 'up'; }
-		else if (down) { vy = SPEED; this.direction = 'down'; }
+		if (up) {
+			vy = -SPEED;
+			this.direction = 'up';
+		} else if (down) {
+			vy = SPEED;
+			this.direction = 'down';
+		}
 
 		// Normalize diagonal
 		if (vx !== 0 && vy !== 0) {

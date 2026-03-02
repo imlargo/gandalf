@@ -9,7 +9,7 @@
 </script>
 
 <div class="hud-overlay">
-	<Badge variant="secondary" class="select-none shadow-md">
+	<Badge variant="secondary" class="shadow-md select-none">
 		{playerCount}
 		{playerCount === 1 ? 'user' : 'users'} online
 	</Badge>

@@ -24,25 +24,29 @@
 		const s = connectSocket();
 		socket = s;
 
-		s.emit('player:join', { name, color, x: SPAWN_X, y: SPAWN_Y }, (response: { success?: boolean; error?: string; players?: Record<string, unknown> }) => {
-			loading = false;
+		s.emit(
+			'player:join',
+			{ name, color, x: SPAWN_X, y: SPAWN_Y },
+			(response: { success?: boolean; error?: string; players?: Record<string, unknown> }) => {
+				loading = false;
 
-			if (response.error) {
-				error = response.error;
-				disconnectSocket();
-				socket = null;
-				return;
-			}
+				if (response.error) {
+					error = response.error;
+					disconnectSocket();
+					socket = null;
+					return;
+				}
 
-			if (response.success) {
-				userName = name;
-				userColor = color;
-				playersData = response.players || {};
-				gameUser.set({ name, color });
-				inGame.set(true);
-				joined = true;
+				if (response.success) {
+					userName = name;
+					userColor = color;
+					playersData = response.players || {};
+					gameUser.set({ name, color });
+					inGame.set(true);
+					joined = true;
+				}
 			}
-		});
+		);
 
 		// Handle connection error
 		s.on('connect_error', () => {

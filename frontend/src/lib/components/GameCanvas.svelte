@@ -18,7 +18,14 @@
 
 	onMount(async () => {
 		const { createGame } = await import('$lib/game/main');
-		game = createGame(canvasContainer, socket, name, color, players as Record<string, never>, onPlayerCountChange);
+		game = createGame(
+			canvasContainer,
+			socket,
+			name,
+			color,
+			players as Record<string, never>,
+			onPlayerCountChange
+		);
 	});
 
 	onDestroy(() => {
