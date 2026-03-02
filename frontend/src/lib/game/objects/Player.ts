@@ -83,8 +83,8 @@ export class Player {
 
 		// Normalize diagonal
 		if (vx !== 0 && vy !== 0) {
-			vx *= 0.707;
-			vy *= 0.707;
+			vx *= Math.SQRT1_2;
+			vy *= Math.SQRT1_2;
 		}
 
 		body.setVelocity(vx, vy);

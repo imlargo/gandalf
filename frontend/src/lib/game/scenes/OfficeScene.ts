@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { Socket } from 'socket.io-client';
 import { Player } from '../objects/Player';
 import { RemotePlayer } from '../objects/RemotePlayer';
-import { buildOfficeMap, MAP_WIDTH, MAP_HEIGHT } from '../map/officeMap';
+import { buildOfficeMap, MAP_WIDTH, MAP_HEIGHT, SPAWN_X, SPAWN_Y } from '../map/officeMap';
 
 interface PlayerData {
 	id: string;
@@ -60,8 +60,8 @@ export class OfficeScene extends Phaser.Scene {
 		this.walls = buildOfficeMap(this);
 
 		// Spawn point (hallway intersection)
-		const spawnX = 1020;
-		const spawnY = 800;
+		const spawnX = SPAWN_X;
+		const spawnY = SPAWN_Y;
 
 		// Create local player
 		this.player = new Player(this, spawnX, spawnY, this.playerName, this.playerColor);

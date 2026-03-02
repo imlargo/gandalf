@@ -15,6 +15,12 @@ const io = new Server(httpServer, {
 
 app.use(cors());
 
+// Map bounds
+const MAP_WIDTH = 2048;
+const MAP_HEIGHT = 1536;
+const SPAWN_X = 1020;
+const SPAWN_Y = 800;
+
 // In-memory player storage
 const players = new Map(); // socketId → { id, name, color, x, y, direction }
 
@@ -25,6 +31,11 @@ const MOVE_INTERVAL_MS = 50; // max 20 updates/second = 50ms between updates
 app.get('/', (_req, res) => {
   res.json({ status: 'ok', players: players.size });
 });
+
+function clampPosition(val, max) {
+  if (typeof val !== 'number' || !isFinite(val)) return null;
+  return Math.max(0, Math.min(val, max));
+}
 
 io.on('connection', (socket) => {
   console.log(`Socket connected: ${socket.id}`);
@@ -54,8 +65,8 @@ io.on('connection', (socket) => {
       id: socket.id,
       name,
       color,
-      x: x || 400,
-      y: y || 300,
+      x: clampPosition(x, MAP_WIDTH) ?? SPAWN_X,
+      y: clampPosition(y, MAP_HEIGHT) ?? SPAWN_Y,
       direction: 'down'
     };
 
@@ -87,6 +98,12 @@ io.on('connection', (socket) => {
     if (!player) return;
 
     const { x, y, direction } = data;
+
+    // Validate coordinates
+    if (!isFinite(x) || !isFinite(y) || x < 0 || x > MAP_WIDTH || y < 0 || y > MAP_HEIGHT) {
+      return;
+    }
+
     player.x = x;
     player.y = y;
     player.direction = direction || player.direction;

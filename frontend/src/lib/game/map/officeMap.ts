@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 export const MAP_WIDTH = 2048;
 export const MAP_HEIGHT = 1536;
+export const SPAWN_X = 1020;
+export const SPAWN_Y = 800;
 
 const WALL_COLOR = 0x4a5568;
 const FLOOR_COLOR = 0xf7fafc;
@@ -183,5 +185,8 @@ function addWallBody(
 ): void {
 	const body = scene.add.zone(rect.x + rect.w / 2, rect.y + rect.h / 2, rect.w, rect.h);
 	group.add(body);
-	(body.body as Phaser.Physics.Arcade.StaticBody).setSize(rect.w, rect.h);
+	const staticBody = body.body as Phaser.Physics.Arcade.StaticBody | null;
+	if (staticBody) {
+		staticBody.setSize(rect.w, rect.h);
+	}
 }

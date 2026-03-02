@@ -4,6 +4,7 @@
 	import HUD from '$lib/components/HUD.svelte';
 	import { connectSocket, disconnectSocket, getSocket } from '$lib/stores/gameSocket';
 	import { gameUser, inGame } from '$lib/stores/gameUser';
+	import { SPAWN_X, SPAWN_Y } from '$lib/game/map/officeMap';
 	import { onDestroy } from 'svelte';
 	import type { Socket } from 'socket.io-client';
 
@@ -23,7 +24,7 @@
 		const s = connectSocket();
 		socket = s;
 
-		s.emit('player:join', { name, color, x: 1020, y: 800 }, (response: { success?: boolean; error?: string; players?: Record<string, unknown> }) => {
+		s.emit('player:join', { name, color, x: SPAWN_X, y: SPAWN_Y }, (response: { success?: boolean; error?: string; players?: Record<string, unknown> }) => {
 			loading = false;
 
 			if (response.error) {
