@@ -60,8 +60,8 @@ export class Player {
 
 		this.body = this.sprite.body as Phaser.Physics.Arcade.Body;
 		this.body.setCollideWorldBounds(true);
-		this.body.setCircle(COLLIDER_RADIUS, 0, 0);
-		this.body.setOffset(-COLLIDER_RADIUS, -COLLIDER_RADIUS);
+		this.body.setCircle(COLLIDER_RADIUS);
+		this.body.setOffset(PLAYER_RADIUS - COLLIDER_RADIUS, PLAYER_RADIUS - COLLIDER_RADIUS);
 
 		// Input setup
 		if (scene.input.keyboard) {
