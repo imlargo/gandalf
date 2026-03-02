@@ -2,7 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { authCookiesManager } from '$lib/server/cookies/manager';
 import { AuthService } from '$lib/features/auth/services/auth';
 import { createAuthHandler } from '$lib/server/hooks/auth';
-
+/*
 export const handle: Handle = createAuthHandler({
 	// Gestor de cookies
 	cookieManager: authCookiesManager,
@@ -31,3 +31,4 @@ export const handle: Handle = createAuthHandler({
 		// Aquí podrías agregar logging adicional o métricas
 	}
 });
+*/
