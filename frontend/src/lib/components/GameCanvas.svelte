@@ -9,9 +9,10 @@
 		color: string;
 		players: Record<string, unknown>;
 		onPlayerCountChange?: (count: number) => void;
+		onZoomChange?: (zoom: number) => void;
 	}
 
-	let { socket, name, color, players, onPlayerCountChange }: Props = $props();
+	let { socket, name, color, players, onPlayerCountChange, onZoomChange }: Props = $props();
 
 	let canvasContainer: HTMLDivElement;
 	let game: Phaser.Game | null = null;
@@ -24,7 +25,8 @@
 			name,
 			color,
 			players as Record<string, never>,
-			onPlayerCountChange
+			onPlayerCountChange,
+			onZoomChange
 		);
 	});
 

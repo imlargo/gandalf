@@ -13,6 +13,11 @@ interface PlayerData {
 	direction: string;
 }
 
+const DEFAULT_ZOOM = 3;
+const MIN_ZOOM = 1.5;
+const MAX_ZOOM = 5;
+const ZOOM_STEP = 0.25;
+
 export class OfficeScene extends Phaser.Scene {
 	private player!: Player;
 	private remotePlayers: Map<string, RemotePlayer> = new Map();
@@ -25,6 +30,7 @@ export class OfficeScene extends Phaser.Scene {
 	private lastEmittedX = 0;
 	private lastEmittedY = 0;
 	private onPlayerCountChange?: (count: number) => void;
+	private onZoomChange?: (zoom: number) => void;
 	private initialPlayers: Record<string, PlayerData> = {};
 
 	constructor() {
@@ -37,11 +43,13 @@ export class OfficeScene extends Phaser.Scene {
 		color: string;
 		players: Record<string, PlayerData>;
 		onPlayerCountChange?: (count: number) => void;
+		onZoomChange?: (zoom: number) => void;
 	}): void {
 		this.socket = data.socket;
 		this.playerName = data.name;
 		this.playerColor = data.color;
 		this.onPlayerCountChange = data.onPlayerCountChange;
+		this.onZoomChange = data.onZoomChange;
 		this.initialPlayers = data.players || {};
 	}
 
@@ -65,7 +73,18 @@ export class OfficeScene extends Phaser.Scene {
 		// Camera follow
 		this.cameras.main.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
 		this.cameras.main.startFollow(this.player.getCollider(), true, 0.1, 0.1);
-		this.cameras.main.setZoom(2);
+		this.cameras.main.setZoom(DEFAULT_ZOOM);
+
+		// Scroll wheel zoom
+		this.input.on('wheel', (_pointer: unknown, _gameObjects: unknown, _deltaX: number, deltaY: number) => {
+			const cam = this.cameras.main;
+			const delta = deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
+			const newZoom = Phaser.Math.Clamp(cam.zoom + delta, MIN_ZOOM, MAX_ZOOM);
+			cam.setZoom(newZoom);
+			if (this.onZoomChange) {
+				this.onZoomChange(newZoom);
+			}
+		});
 
 		// Socket event listeners
 		this.setupSocketListeners();

@@ -12,6 +12,7 @@
 	let loading = $state(false);
 	let joined = $state(false);
 	let playerCount = $state(1);
+	let zoomLevel = $state(3);
 	let socket: Socket | null = $state(null);
 	let playersData: Record<string, unknown> = $state({});
 	let userName = $state('');
@@ -61,6 +62,20 @@
 		playerCount = count;
 	}
 
+	function handleZoomChange(zoom: number) {
+		zoomLevel = zoom;
+	}
+
+	function handleLeave() {
+		disconnectSocket();
+		gameUser.set(null);
+		inGame.set(false);
+		joined = false;
+		socket = null;
+		playerCount = 1;
+		zoomLevel = 3;
+	}
+
 	onDestroy(() => {
 		disconnectSocket();
 		gameUser.set(null);
@@ -79,8 +94,9 @@
 		color={userColor}
 		players={playersData}
 		onPlayerCountChange={handlePlayerCountChange}
+		onZoomChange={handleZoomChange}
 	/>
-	<HUD {playerCount} />
+	<HUD {playerCount} {userName} {userColor} {zoomLevel} onLeave={handleLeave} />
 {:else}
 	<JoinScreen onJoin={handleJoin} {error} {loading} />
 {/if}

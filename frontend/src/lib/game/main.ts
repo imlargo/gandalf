@@ -18,7 +18,8 @@ export function createGame(
 	name: string,
 	color: string,
 	players: Record<string, PlayerData>,
-	onPlayerCountChange?: (count: number) => void
+	onPlayerCountChange?: (count: number) => void,
+	onZoomChange?: (zoom: number) => void
 ): Phaser.Game {
 	const config: Phaser.Types.Core.GameConfig = {
 		type: Phaser.AUTO,
@@ -50,7 +51,8 @@ export function createGame(
 		name,
 		color,
 		players,
-		onPlayerCountChange
+		onPlayerCountChange,
+		onZoomChange
 	});
 
 	return game;

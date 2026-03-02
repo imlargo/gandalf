@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 const PLAYER_RADIUS = 18;
+const COLLIDER_RADIUS = 12;
 const SPEED = 160;
 
 export class Player {
@@ -59,8 +60,8 @@ export class Player {
 
 		this.body = this.sprite.body as Phaser.Physics.Arcade.Body;
 		this.body.setCollideWorldBounds(true);
-		this.body.setCircle(PLAYER_RADIUS, 0, 0);
-		this.body.setOffset(-PLAYER_RADIUS, -PLAYER_RADIUS);
+		this.body.setCircle(COLLIDER_RADIUS, 0, 0);
+		this.body.setOffset(-COLLIDER_RADIUS, -COLLIDER_RADIUS);
 
 		// Input setup
 		if (scene.input.keyboard) {
